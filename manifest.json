@@ -8,7 +8,12 @@
         "scripts": ["background.js"],
         "persistent": false
     },
-    
+    "content_scripts": [
+        {
+            "matches": ["<all_urls>"],
+            "js": ["save.js"]
+        }
+    ],
     "browser_action": {
         // make an icon
         "default_popup":"popup.html"
