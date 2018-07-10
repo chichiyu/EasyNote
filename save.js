@@ -9,7 +9,8 @@ document.addEventListener("click", function(){
     // if a text is selected
     if (text.length > 0 && prevText !== text) {
         // remove the previous button
-        if (prevButton) prevButton.parentElement.removeChild(prevButton);
+        if (prevButton) var parent = prevButton.parentElement;
+        if (parent) parent.removeChild(prevButton);
 
         var node = selection.focusNode;
         console.log(node.nodeValue);
