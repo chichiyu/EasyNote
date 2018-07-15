@@ -1,0 +1,127 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    min-width: 400px;
+    min-height: 400px;
+}
+/* format of the overall flexbox */
+#flexbox {
+    display: flex;
+    width: 400px;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+/* format of the output header */
+#outputHeader {
+    display: flex;
+    width: 220px;
+    flex-flow: row;
+}
+
+#outputHeader > .date {
+    flex-basis: 80%;
+    align-self: center;    
+    text-align: center;
+    font-size: 30px;
+    height: 40%
+}
+
+#outputHeader > .button {
+    flex-basis: 10%;
+    align-self: center;
+    text-align: center;
+    cursor: pointer;
+    height: 20%;
+}
+
+#outputHeader > .button:not(.lastPage):hover {
+    background-color: #dddddd;
+}
+
+.lastPage {
+    color: #aaaaaa;
+}
+/* format of the calendar heading */
+#heading {
+    display: flex;
+    width: 140px;
+    flex-direction: row;
+    font-size: 10px;
+}
+
+#heading > .side {
+    flex-basis: 10%;
+    text-align: center;
+    cursor: pointer;    
+}
+
+#heading > .center {
+    flex-basis: 80%;
+    text-align: center;
+}
+
+#heading > div:not(.lastPage):hover {
+    background-color: #dddddd;
+}
+
+/* format of the calendar days */
+#dates {
+    display: flex;
+    width: 140px;
+    flex-flow: row wrap;
+    justify-content: left;
+    font-size: 10px;
+}
+
+.day {
+    flex-basis: 20px;
+    text-align: center;
+}
+
+.day:nth-child(7n + 1) {
+    color: red;
+}
+
+.today {
+    background-color: #D196D1;
+}
+
+.hasWord {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.hasWord:hover {
+    background-color: #dddddd;
+    
+}
+
+/* format of the words */
+#wordList > .word {
+    color: black;
+    font-size: 14px;
+}
+
+#wordList > .noWord {
+    color: red;
+}
+
+#wordList > .yesWord {
+    color: green;
+}
+
+#wordList > :first-child {
+    list-style-type: none;
+    font-size: 18px;
+    margin: 2px;
+}
+
+/* format of the clear button */
+#clear {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
