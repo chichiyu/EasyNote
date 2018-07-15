@@ -26,21 +26,34 @@ document.addEventListener("click", function(){
 
         // if the button is pressed, store the word
         button.onclick = function() {
-            // store in the format -- date: word
-            var obj = {};
-            var key = getDate();
+            // store in the format -- {year: {month: {date: word}}}
+            var today = new Date();
+            var year = today.getFullYear();
+            var month = today.getMonth();
+            var date = today.getDate();
 
-            // check if key exists
-            chrome.storage.sync.get(key, function(item) {
-                if (Object.keys(item).length === 0) {
-                    obj[key] = [text];
+            chrome.storage.sync.get(null, function(item) {
+                if (!item[year]) {
+                    var dateObj = {};
+                    dateObj[date] = [text];
+                    var monthObj = {};
+                    monthObj[month] = dateObj;
+                    item[year] = monthObj;
+                } else if (!item[year][month]) {
+                    var dateObj = {};
+                    dateObj[date] = [text];
+                    item[year][month] = dateObj;
+                } else if (!item[year][month][date]) {
+                    item[year][month][date] = [text];
                 } else {
-                    item[key].push(text);
-                    obj[key] = item[key];
+                    var arr = item[year][month][date];
+                    arr.push(text);
+                    arr.sort();
+                    item[year][month][date] = arr;
                 }
                 
-                chrome.storage.sync.set(obj, function() {
-                    console.log('You saved a word: ' + text + '!');
+                chrome.storage.sync.set(item, function() {
+                    console.log(item);
                 })
             })
 
@@ -50,9 +63,3 @@ document.addEventListener("click", function(){
         }
     }
 })
-
-// get today's month and date
-function getDate() {
-    var date = new Date();
-    return date.getMonth() + 1 + "/" + date.getDate();
-}
