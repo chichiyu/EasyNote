@@ -1,8 +1,13 @@
+var navigation = document.getElementById('navigation');
+var calendarTab = document.getElementById('calendarTab');
+var listTab = document.getElementById('listTab');
+var flexbox = document.getElementById('flexbox');
 var calendar = document.getElementById('calendar');
 var heading = document.getElementById('heading');
 var dates = document.getElementById('dates');
 var outputHeader = document.getElementById('outputHeader');
 var wordList = document.getElementById('wordList');
+var listView = document.getElementById('listView');
 
 // get today's information
 var today = new Date();
@@ -15,13 +20,19 @@ const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "
 const days = ["S", "M", "T", "W", "T", "F", "S"];
 var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
-var words; // keeps track of what words have been stored
+var byDate; // keeps track of what words have been stored by each day
+var byWord; // keeps track of all words stored
+
+calendarTab.onclick = function() {makeCurrent("calendar")};
+listTab.onclick = function() {makeCurrent("list")};
 
 chrome.storage.sync.get(null, function(results){
-    words = results;
-    console.log(words);
+    byDate = results["byDate"] ? results["byDate"] : {};
+    byWord = results["byWord"] ? results["byWord"] : [];
     makeCalendar(todayYear, todayMonth);
-    displayWords(todayYear, todayMonth, todayDate);
+    displayByDate(todayYear, todayMonth, todayDate);
+    displayByWord();
+    makeCurrent("calendar");
 })
 
 
@@ -97,8 +108,8 @@ function addText(input) {
 
 // add the date to the calendar
 function addDate(year, month, date) {  
-    var hasWord = words[year] ? words[year][month] ? words[year][month][date]
-        ? words[year][month][date].length > 0 : false : false : false;
+    var hasWord = byDate[year] ? byDate[year][month] ? byDate[year][month][date]
+        ? byDate[year][month][date].length > 0 : false : false : false;
     // console.log(words);
     console.log(hasWord);
     var newDiv = document.createElement("div");
@@ -110,13 +121,13 @@ function addDate(year, month, date) {
         newDiv.classList.add("today");
     if (hasWord) {
         newDiv.classList.add("hasWord")
-        newDiv.onclick = function() {displayWords(year, month, date)}
+        newDiv.onclick = function() {displayByDate(year, month, date)}
     };
 
     dates.appendChild(newDiv);
 }
 
-function displayWords(year, month, date) {    
+function displayByDate(year, month, date) {    
     // clear the previous words
     while (outputHeader.lastChild) {
         outputHeader.removeChild(outputHeader.lastChild);
@@ -132,9 +143,9 @@ function displayWords(year, month, date) {
     previousDiv.appendChild(previousText);
     previousDiv.classList.add("button");
     previousDiv.onclick = function() {
-        date > 1 ? displayWords(year, month, date - 1) : 
-        month > 0 ? displayWords(year, month - 1, daysInMonth[month - 1]) :
-        displayWords(year - 1, 11, 31);
+        date > 1 ? displayByDate(year, month, date - 1) : 
+        month > 0 ? displayByDate(year, month - 1, daysInMonth[month - 1]) :
+        displayByDate(year - 1, 11, 31);
     }
 
     var dateDiv = document.createElement("div");
@@ -150,9 +161,9 @@ function displayWords(year, month, date) {
         nextDiv.classList.add("lastPage")
     } else {
         nextDiv.onclick = function() {
-            date < daysInMonth[month] ? displayWords(year, month, date + 1) : 
-            month < 11 ? displayWords(year, month + 1, 1) :
-            displayWords(year + 1, 0, 1);
+            date < daysInMonth[month] ? displayByDate(year, month, date + 1) : 
+            month < 11 ? displayByDate(year, month + 1, 1) :
+            displayByDate(year + 1, 0, 1);
         }
     }
     
@@ -160,8 +171,8 @@ function displayWords(year, month, date) {
     outputHeader.appendChild(dateDiv);
     outputHeader.appendChild(nextDiv);
 
-    var wordArr = words[year] ? words[year][month] ? words[year][month][date]
-    ? words[year][month][date] : null : null : null;
+    var wordArr = byDate[year] ? byDate[year][month] ? byDate[year][month][date]
+    ? byDate[year][month][date] : null : null : null;
 
     if (wordArr === null || wordArr.length === 0) {
         var noWord = document.createElement("li");
@@ -186,10 +197,43 @@ function displayWords(year, month, date) {
     }
 }
 
+function displayByWord() {
+    if (byWord.length === 0) {
+        var noWord = document.createElement("li");
+        noWord.classList.add("noWord");
+        var newText = document.createTextNode("You didn't save any words!");
+        noWord.appendChild(newText);
+        listView.appendChild(noWord);
+    } else {
+        for (word of byWord) {
+            var newWord = document.createElement("li");
+            newWord.classList.add("word");
+            var newText = document.createTextNode(word);
+            newWord.appendChild(newText);
+            listView.appendChild(newWord);
+        }
+    }
+}
 // print the date in the format yyyy/mm/dd
 function printDate(year, month, date) {
     month++;
     if (month < 10) month = "0" + month;
     if (date < 10) date = "0" + date;
     return year + "/" + month + "/" + date;
+}
+
+function makeCurrent(tab) {
+    if (tab === "calendar") {
+        calendarTab.classList.add("current");
+        listTab.classList.remove("current");
+        flexbox.style.display = "flex";
+        wordList.style.display = "block";
+        listView.style.display = "none";
+    } else {
+        calendarTab.classList.remove("current");
+        listTab.classList.add("current");
+        flexbox.style.display = "none";
+        wordList.style.display = "none";
+        listView.style.display = "block";
+    }
 }

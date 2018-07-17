@@ -3,7 +3,7 @@ var prevText;
 
 document.addEventListener("click", function(){
     var selection = window.getSelection();
-    var text = selection.toString();
+    var text = selection.toString().trim();
     console.log(text);
     
     // if a text is selected
@@ -33,23 +33,34 @@ document.addEventListener("click", function(){
             var date = today.getDate();
 
             chrome.storage.sync.get(null, function(item) {
-                if (!item[year]) {
+                if (!item["byDate"] || !item["byDate"][year]) {
                     var dateObj = {};
                     dateObj[date] = [text];
                     var monthObj = {};
                     monthObj[month] = dateObj;
-                    item[year] = monthObj;
-                } else if (!item[year][month]) {
+                    item["byDate"] = {};
+                    item["byDate"][year] = monthObj;
+                } else if (!item["byDate"][year][month]) {
                     var dateObj = {};
                     dateObj[date] = [text];
-                    item[year][month] = dateObj;
-                } else if (!item[year][month][date]) {
-                    item[year][month][date] = [text];
+                    item["byDate"][year][month] = dateObj;
+                } else if (!item["byDate"][year][month][date]) {
+                    item["byDate"][year][month][date] = [text];
                 } else {
-                    var arr = item[year][month][date];
-                    arr.push(text);
-                    arr.sort();
-                    item[year][month][date] = arr;
+                    var arr = item["byDate"][year][month][date];
+                    if (arr.indexOf(text) === -1) {
+                        arr.push(text);
+                        arr.sort();
+                    }
+                    item["byDate"][year][month][date] = arr;
+                }
+
+                if (!item["byWord"]) {
+                    item["byWord"] = [];
+                    item["byWord"].push(text);
+                } else if (item["byWord"].indexOf(text) === -1) {
+                    item["byWord"].push(text);
+                    item["byWord"].sort();
                 }
                 
                 chrome.storage.sync.set(item, function() {

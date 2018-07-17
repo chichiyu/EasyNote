@@ -6,6 +6,33 @@ body {
     min-width: 400px;
     min-height: 400px;
 }
+
+/* format of the navigation bar */
+#navigation {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    margin: 0 0 10px 0;
+}
+
+#navigation > div {
+    flex-basis: 50%;
+    text-align: center;
+    font-size: 15px;
+    background-color: #333333;
+    color: #ffffff;
+}
+
+#navigation > div.current {
+    background-color: #4CAF50
+}
+
+
+#navigation > div:not(.current):hover {
+    background-color: #dddddd;
+    color: #222222;
+}
+
 /* format of the overall flexbox */
 #flexbox {
     display: flex;
@@ -18,7 +45,7 @@ body {
 #outputHeader {
     display: flex;
     width: 220px;
-    flex-flow: row;
+    flex-direction: row;
 }
 
 #outputHeader > .date {
@@ -49,7 +76,7 @@ body {
     display: flex;
     width: 140px;
     flex-direction: row;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 #heading > .side {
@@ -100,20 +127,20 @@ body {
 }
 
 /* format of the words */
-#wordList > .word {
+.word {
     color: black;
     font-size: 14px;
 }
 
-#wordList > .noWord {
+.noWord {
     color: red;
+    list-style-type: none;
+    font-size: 18px;
+    margin: 2px;
 }
 
-#wordList > .yesWord {
+.yesWord {
     color: green;
-}
-
-#wordList > :first-child {
     list-style-type: none;
     font-size: 18px;
     margin: 2px;
