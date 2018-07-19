@@ -128,8 +128,15 @@ body {
 
 /* format of the wordlist */
 #wordList {
+    display: flex;
+    flex-flow: row wrap;
     height: 60%;
     overflow-y: auto;
+    align-content: flex-start;
+}
+
+#wordList > * {
+    margin: 2px 0;
 }
 
 /* format of the listView */
@@ -140,6 +147,7 @@ body {
 
 /* format of the words */
 .word {
+    flex-basis: 80%;
     color: black;
     font-size: 14px;
 }
@@ -156,6 +164,25 @@ body {
     list-style-type: none;
     font-size: 18px;
     margin: 2px;
+}
+
+/* format of the minus button */
+.minusButton {
+    /* flex-basis: 10%; */
+    height: 19px;
+    color: white;
+    background-color: #F44336;
+    font-family: "Courier New", Courier, monospace;
+    padding: 0.5px 5.5px;
+    border-radius: 50%;
+    border: none;
+    position: relative;
+    left: 20px;
+    cursor: pointer;
+}
+
+.minusButton:hover {
+    background-color: #F5A0A0;
 }
 
 /* format of the clear button */

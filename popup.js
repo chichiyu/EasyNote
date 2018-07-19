@@ -117,6 +117,7 @@ function addDate(year, month, date) {
     var text = document.createTextNode(date);
     newDiv.appendChild(text);
     newDiv.classList.add("day");
+    newDiv.id = String(date);
 
     if (year === todayYear && month === todayMonth && date === todayDate) 
         newDiv.classList.add("today");
@@ -190,11 +191,23 @@ function displayByDate(year, month, date) {
             var newText = document.createTextNode(word);
             newWord.appendChild(newText);
             wordList.appendChild(newWord);
+
+            var newMinusButton = document.createElement("button");
+            var minus = document.createTextNode("-");
+            newMinusButton.appendChild(minus);
+            newMinusButton.classList.add("minusButton");
+            wordList.appendChild(newMinusButton);
+            let thisButton = newMinusButton;
+            newMinusButton.onclick = function() {deleteWord(year, month, date, thisButton)};
         }
     }
 }
 
 function displayByWord() {
+    while (listView.lastChild) {
+        listView.removeChild(listView.lastChild);
+    }
+
     if (byWord.length === 0) {
         var noWord = document.createElement("li");
         noWord.classList.add("noWord");
@@ -225,7 +238,7 @@ function makeCurrent(tab) {
         listTab.classList.remove("current");
         flexbox.style.display = "flex";
         wordListTitle.style.display = "block";
-        wordList.style.display = "block";
+        wordList.style.display = "flex";
         listView.style.display = "none";
     } else {
         calendarTab.classList.remove("current");
@@ -235,4 +248,30 @@ function makeCurrent(tab) {
         wordList.style.display = "none";
         listView.style.display = "block";
     }
+}
+
+function deleteWord(year, month, date, button) {
+    var parent = button.parentNode;
+    var word = button.previousSibling.innerHTML;
+
+    parent.removeChild(button.previousSibling);
+    parent.removeChild(button);
+    
+    // remove the time from storage
+    var index = byDate[year][month][date].indexOf(word);
+    byDate[year][month][date].splice(index, 1);
+
+    if (byDate[year][month][date].length === 0) {
+        document.getElementById(String(date)).classList.remove("hasWord");
+        wordListTitle.innerHTML = "You didn't save any words on this day!"
+        wordListTitle.classList.remove("yesWord");
+        wordListTitle.classList.add("noWord");
+    }
+
+    var index2 = byWord.indexOf(word);
+    byWord.splice(index2, 1);
+
+    displayByWord();
+
+    chrome.storage.sync.set({byDate: byDate, byWord: byWord});
 }
