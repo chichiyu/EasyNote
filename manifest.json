@@ -11,11 +11,11 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["save.js"]
+            "js": ["save.js"],
+            "css": ["save.css"]
         }
     ],
     "browser_action": {
-        // make an icon
         "default_popup":"popup.html"
     },
     "permissions": ["activeTab", "storage"]

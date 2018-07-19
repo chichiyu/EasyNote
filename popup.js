@@ -6,6 +6,7 @@ var calendar = document.getElementById('calendar');
 var heading = document.getElementById('heading');
 var dates = document.getElementById('dates');
 var outputHeader = document.getElementById('outputHeader');
+var wordListTitle = document.getElementById('wordListTitle');
 var wordList = document.getElementById('wordList');
 var listView = document.getElementById('listView');
 
@@ -175,17 +176,13 @@ function displayByDate(year, month, date) {
     ? byDate[year][month][date] : null : null : null;
 
     if (wordArr === null || wordArr.length === 0) {
-        var noWord = document.createElement("li");
-        noWord.classList.add("noWord");
-        var newText = document.createTextNode("You didn't save any words on this day!");
-        noWord.appendChild(newText);
-        wordList.appendChild(noWord);
+        wordListTitle.innerHTML = "You didn't save any words on this day!"
+        wordListTitle.classList.remove("yesWord");
+        wordListTitle.classList.add("noWord");
     } else {
-        var yesWord = document.createElement("li");
-        yesWord.classList.add("yesWord");
-        var newText = document.createTextNode("Your saved words for the day:");
-        yesWord.appendChild(newText);
-        wordList.appendChild(yesWord);
+        wordListTitle.innerHTML = "Your saved words for the day:";
+        wordListTitle.classList.remove("noWord");
+        wordListTitle.classList.add("yesWord");
 
         for (var word of wordArr) {
             var newWord = document.createElement("li");
@@ -227,12 +224,14 @@ function makeCurrent(tab) {
         calendarTab.classList.add("current");
         listTab.classList.remove("current");
         flexbox.style.display = "flex";
+        wordListTitle.style.display = "block";
         wordList.style.display = "block";
         listView.style.display = "none";
     } else {
         calendarTab.classList.remove("current");
         listTab.classList.add("current");
         flexbox.style.display = "none";
+        wordListTitle.style.display = "none";
         wordList.style.display = "none";
         listView.style.display = "block";
     }

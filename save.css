@@ -1,0 +1,31 @@
+/* format of the add button */
+.addButton {
+    all: initial;
+    background-color: #4CAF50;
+    color: white;
+    font-family: "Courier New", Courier, monospace;
+    padding: 1px 5px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    left: 10px;
+}
+
+.addButton:hover {
+    background-color: #8DD38D;
+}
+
+.checkButton {
+    all: initial;
+    background-color: white;
+    color: green;
+    font-family: "Courier New", Courier, monospace;
+    padding: 1px 5px;
+    font-size: 11.5px;
+    border-radius: 50%;
+    border: 2px solid #4CAF50;
+    cursor: default;
+    position: relative;
+    left: 10px;
+}

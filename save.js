@@ -3,7 +3,7 @@ var prevText;
 
 document.addEventListener("click", function(){
     var selection = window.getSelection();
-    var text = selection.toString().trim();
+    var text = selection.toString().toLowerCase().trim();
     console.log(text);
     
     // if a text is selected
@@ -17,8 +17,9 @@ document.addEventListener("click", function(){
 
         // create new button
         var button = document.createElement("button");
-        var buttonText = document.createTextNode("click me!");
+        var buttonText = document.createTextNode("+");
         button.appendChild(buttonText);
+        button.classList.add("addButton");
 
         node.parentElement.appendChild(button);
         prevButton = button;
@@ -69,7 +70,10 @@ document.addEventListener("click", function(){
             })
 
             // remove the button
-            button.innerHTML = "Saved!";
+            button.innerHTML = "\u2714";
+            button.classList.remove("addButton");
+            button.classList.add("checkButton");
+            button.onclick = function(){};
             setTimeout(function(){button.parentElement.removeChild(button)}, 2000);
         }
     }

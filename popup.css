@@ -4,7 +4,7 @@
 
 body {
     min-width: 400px;
-    min-height: 400px;
+    height: 400px;
 }
 
 /* format of the navigation bar */
@@ -124,6 +124,18 @@ body {
 .hasWord:hover {
     background-color: #dddddd;
     
+}
+
+/* format of the wordlist */
+#wordList {
+    height: 60%;
+    overflow-y: auto;
+}
+
+/* format of the listView */
+#listView {
+    height: 94%;
+    overflow-y: auto;
 }
 
 /* format of the words */
