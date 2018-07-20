@@ -64,13 +64,10 @@ body {
     height: 20%;
 }
 
-#outputHeader > .button:not(.lastPage):hover {
+#outputHeader > .button:not(.future):hover {
     background-color: #dddddd;
 }
 
-.lastPage {
-    color: #aaaaaa;
-}
 /* format of the calendar heading */
 #heading {
     display: flex;
@@ -90,7 +87,7 @@ body {
     text-align: center;
 }
 
-#heading > div:not(.lastPage):hover {
+#heading > div:not(.future):hover {
     background-color: #dddddd;
 }
 
@@ -108,12 +105,16 @@ body {
     text-align: center;
 }
 
-.day:nth-child(7n + 1) {
+.day:nth-child(7n + 1):not(.future) {
     color: red;
 }
 
 .today {
     background-color: #D196D1;
+}
+
+.future {
+    color: #AAAAAA;
 }
 
 .hasWord {

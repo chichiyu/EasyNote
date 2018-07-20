@@ -34,48 +34,46 @@ document.addEventListener("click", function(){
             var date = today.getDate();
 
             chrome.storage.sync.get(null, function(item) {
-                if (!item["byDate"] || !item["byDate"][year]) {
-                    var dateObj = {};
-                    dateObj[date] = [text];
-                    var monthObj = {};
-                    monthObj[month] = dateObj;
-                    item["byDate"] = {};
-                    item["byDate"][year] = monthObj;
-                } else if (!item["byDate"][year][month]) {
-                    var dateObj = {};
-                    dateObj[date] = [text];
-                    item["byDate"][year][month] = dateObj;
-                } else if (!item["byDate"][year][month][date]) {
-                    item["byDate"][year][month][date] = [text];
+                if (item["byWord"] && item["byWord"].indexOf(text) > -1) {
+                    alert("You've saved this word before!");
                 } else {
-                    var arr = item["byDate"][year][month][date];
-                    if (arr.indexOf(text) === -1) {
+                    if (!item["byDate"] || !item["byDate"][year]) {
+                        var dateObj = {};
+                        dateObj[date] = [text];
+                        var monthObj = {};
+                        monthObj[month] = dateObj;
+                        item["byDate"] = {};
+                        item["byDate"][year] = monthObj;
+                    } else if (!item["byDate"][year][month]) {
+                        var dateObj = {};
+                        dateObj[date] = [text];
+                        item["byDate"][year][month] = dateObj;
+                    } else if (!item["byDate"][year][month][date]) {
+                        item["byDate"][year][month][date] = [text];
+                    } else {
+                        var arr = item["byDate"][year][month][date];
                         arr.push(text);
                         arr.sort();
+                        item["byDate"][year][month][date] = arr;
                     }
-                    item["byDate"][year][month][date] = arr;
-                }
 
-                if (!item["byWord"]) {
-                    item["byWord"] = [];
-                    item["byWord"].push(text);
-                } else if (item["byWord"].indexOf(text) === -1) {
+                    if (!item["byWord"]) {
+                        item["byWord"] = [];
+                    }
                     item["byWord"].push(text);
                     item["byWord"].sort();
+                                    
+                    chrome.storage.sync.set(item, function() {
+                        // add a check button to indicate saved
+                        var newButton = document.createElement("button");
+                        var newButtonText = document.createTextNode("\u2714")
+                        newButton.appendChild(newButtonText);
+                        newButton.classList.add("checkButton");
+                        node.parentElement.appendChild(newButton);
+                        setTimeout(function(){newButton.parentElement.removeChild(newButton)}, 2000);
+                    })
                 }
-                
-                chrome.storage.sync.set(item, function() {
-                    console.log(item);
-                })
             })
-
-            // add a check button to indicate saved
-            var checkButton = document.createElement("button");
-            var checkButtonText = document.createTextNode("\u2714");
-            checkButton.appendChild(checkButtonText);
-            checkButton.classList.add("checkButton");
-            node.parentElement.appendChild(checkButton);
-            setTimeout(function(){checkButton.parentElement.removeChild(checkButton)}, 2000);
         }
     } else {
         // if no text is selected, remove previous button

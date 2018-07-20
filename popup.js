@@ -67,7 +67,7 @@ function makeCalendar(year, month) {
     nextDiv.appendChild(nextText);
     nextDiv.classList.add("side");
     if (year === todayYear && month === todayMonth) {
-        nextDiv.classList.add("lastPage")
+        nextDiv.classList.add("future")
     } else {
         nextDiv.onclick = function() {
             month < 11 ? makeCalendar(year, month + 1) : makeCalendar(year + 1, 0);
@@ -121,6 +121,8 @@ function addDate(year, month, date) {
 
     if (year === todayYear && month === todayMonth && date === todayDate) 
         newDiv.classList.add("today");
+    if (year === todayYear && month === todayMonth && date > todayDate)
+        newDiv.classList.add("future");
     if (hasWord) {
         newDiv.classList.add("hasWord")
         newDiv.onclick = function() {displayByDate(year, month, date)}
@@ -129,6 +131,7 @@ function addDate(year, month, date) {
     dates.appendChild(newDiv);
 }
 
+// Display the words on each date
 function displayByDate(year, month, date) {    
     // clear the previous words
     while (outputHeader.lastChild) {
@@ -160,7 +163,7 @@ function displayByDate(year, month, date) {
     nextDiv.appendChild(nextText);
     nextDiv.classList.add("button");
     if (year === todayYear && month === todayMonth && date === todayDate) {
-        nextDiv.classList.add("lastPage")
+        nextDiv.classList.add("future")
     } else {
         nextDiv.onclick = function() {
             date < daysInMonth[month] ? displayByDate(year, month, date + 1) : 
@@ -203,6 +206,7 @@ function displayByDate(year, month, date) {
     }
 }
 
+// Display all saved words
 function displayByWord() {
     while (listView.lastChild) {
         listView.removeChild(listView.lastChild);
@@ -224,6 +228,7 @@ function displayByWord() {
         }
     }
 }
+
 // print the date in the format yyyy/mm/dd
 function printDate(year, month, date) {
     month++;
@@ -250,6 +255,7 @@ function makeCurrent(tab) {
     }
 }
 
+// Delete a saved word
 function deleteWord(year, month, date, button) {
     var parent = button.parentNode;
     var word = button.previousSibling.innerHTML;
