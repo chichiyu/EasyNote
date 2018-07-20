@@ -6,11 +6,11 @@ document.addEventListener("click", function(){
     var text = selection.toString().toLowerCase().trim();
     console.log(text);
     
-    // if a text is selected
+    // if a new text is selected
     if (text.length > 0 && prevText !== text) {
         // remove the previous button
-        if (prevButton) var parent = prevButton.parentElement;
-        if (parent) parent.removeChild(prevButton);
+        if (prevButton && prevButton.parentElement) 
+            prevButton.parentElement.removeChild(prevButton);
 
         var node = selection.focusNode;
         console.log(node.nodeValue);
@@ -69,12 +69,17 @@ document.addEventListener("click", function(){
                 })
             })
 
-            // remove the button
-            button.innerHTML = "\u2714";
-            button.classList.remove("addButton");
-            button.classList.add("checkButton");
-            button.onclick = function(){};
-            setTimeout(function(){button.parentElement.removeChild(button)}, 2000);
+            // add a check button to indicate saved
+            var checkButton = document.createElement("button");
+            var checkButtonText = document.createTextNode("\u2714");
+            checkButton.appendChild(checkButtonText);
+            checkButton.classList.add("checkButton");
+            node.parentElement.appendChild(checkButton);
+            setTimeout(function(){checkButton.parentElement.removeChild(checkButton)}, 2000);
         }
+    } else {
+        // if no text is selected, remove previous button
+        if (prevButton && prevButton.parentElement)
+            prevButton.parentElement.removeChild(prevButton)
     }
 })
