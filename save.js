@@ -4,7 +4,6 @@ var prevText;
 document.addEventListener("click", function(){
     var selection = window.getSelection();
     var text = selection.toString().toLowerCase().trim();
-    console.log(text);
     
     // if a new text is selected
     if (text.length > 0 && prevText !== text) {
@@ -13,7 +12,6 @@ document.addEventListener("click", function(){
             prevButton.parentElement.removeChild(prevButton);
 
         var node = selection.focusNode;
-        console.log(node.nodeValue);
 
         // create new button
         var button = document.createElement("button");
@@ -34,8 +32,10 @@ document.addEventListener("click", function(){
             var date = today.getDate();
 
             chrome.storage.sync.get(null, function(item) {
-                if (item["byWord"] && item["byWord"].indexOf(text) > -1) {
-                    alert("You've saved this word before!");
+                if (item["byWord"] && indexOf(item["byWord"], text) > -1) {
+                    var obj = item["byWord"][indexOf(item["byWord"], text)]
+                    var msg = "You've already saved this word on " + obj.year + "/" + (obj.month + 1) + "/" + obj.date + "!"
+                    alert(msg);
                 } else {
                     if (!item["byDate"] || !item["byDate"][year]) {
                         var dateObj = {};
@@ -60,9 +60,10 @@ document.addEventListener("click", function(){
                     if (!item["byWord"]) {
                         item["byWord"] = [];
                     }
-                    item["byWord"].push(text);
-                    item["byWord"].sort();
-                                    
+
+                    item["byWord"].push({text: text, year: year, month: month, date: date});
+                    item["byWord"].sort(function(a, b) {return (a.text < b.text) ? -1 : 1});
+
                     chrome.storage.sync.set(item, function() {
                         // add a check button to indicate saved
                         var newButton = document.createElement("button");
@@ -81,3 +82,16 @@ document.addEventListener("click", function(){
             prevButton.parentElement.removeChild(prevButton)
     }
 })
+
+// binary search algorithm to see if a word is saved
+function indexOf(arr, word) {
+    var left = 0;
+    var right = arr.length - 1;
+    while (left <= right) {
+        var mid = Math.floor((left + right) / 2);
+        if (arr[mid].text < word) left = mid + 1;
+        else if (arr[mid].text > word) right = mid - 1;
+        else return mid;
+    }
+    return -1;
+}

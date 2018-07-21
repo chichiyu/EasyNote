@@ -111,8 +111,6 @@ function addText(input) {
 function addDate(year, month, date) {  
     var hasWord = byDate[year] ? byDate[year][month] ? byDate[year][month][date]
         ? byDate[year][month][date].length > 0 : false : false : false;
-    // console.log(words);
-    console.log(hasWord);
     var newDiv = document.createElement("div");
     var text = document.createTextNode(date);
     newDiv.appendChild(text);
@@ -222,7 +220,7 @@ function displayByWord() {
         for (word of byWord) {
             var newWord = document.createElement("li");
             newWord.classList.add("word");
-            var newText = document.createTextNode(word);
+            var newText = document.createTextNode(word.text);
             newWord.appendChild(newText);
             listView.appendChild(newWord);
         }
@@ -274,10 +272,23 @@ function deleteWord(year, month, date, button) {
         wordListTitle.classList.add("noWord");
     }
 
-    var index2 = byWord.indexOf(word);
+    var index2 = indexOf(byWord, word);
     byWord.splice(index2, 1);
 
     displayByWord();
 
     chrome.storage.sync.set({byDate: byDate, byWord: byWord});
+}
+
+// binary search algorithm to find the index of a word
+function indexOf(arr, word) {
+    var left = 0;
+    var right = arr.length - 1;
+    while (left <= right) {
+        var mid = Math.floor((left + right) / 2);
+        if (arr[mid].text < word) left = mid + 1;
+        else if (arr[mid].text > word) right = mid - 1;
+        else return mid;
+    }
+    return -1;
 }
