@@ -142,7 +142,8 @@ body {
 
 /* format of the listView */
 #listView {
-    height: 94%;
+    height: 87%;
+    margin: 0 0 10.5% 0;
     overflow-y: auto;
 }
 
@@ -189,6 +190,20 @@ body {
 /* format of the clear button */
 #clear {
     position: absolute;
+    bottom: 10px;
+    left: 0;
     right: 0;
-    bottom: 0;
+    margin: 0 auto;
+    height: 24px;
+    width: 120px;
+    border-radius: 5px;
+    font-size: 15px;
+    opacity: 0.5;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+
+#clear:hover {
+    opacity: 0.9;
 }

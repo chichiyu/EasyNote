@@ -9,6 +9,7 @@ var outputHeader = document.getElementById('outputHeader');
 var wordListTitle = document.getElementById('wordListTitle');
 var wordList = document.getElementById('wordList');
 var listView = document.getElementById('listView');
+var clear = document.getElementById('clear');
 
 // get today's information
 var today = new Date();
@@ -36,6 +37,17 @@ chrome.storage.sync.get(null, function(results){
     makeCurrent("calendar");
 })
 
+// when the clear button is clicked
+clear.onclick = function () {
+    var r = confirm("Are you sure? This will remove all the words you saved.")
+    if (r === true) chrome.storage.sync.clear(function(){
+        byDate = {};
+        byWord = [];
+        makeCalendar(todayYear, todayMonth);
+        displayByDate(todayYear, todayMonth, todayDate);
+        displayByWord();
+    })
+}
 
 // find how many empty space should be before the first date
 function makeCalendar(year, month) {
@@ -235,6 +247,7 @@ function printDate(year, month, date) {
     return year + "/" + month + "/" + date;
 }
 
+// make a certain tab the current tab
 function makeCurrent(tab) {
     if (tab === "calendar") {
         calendarTab.classList.add("current");
@@ -243,6 +256,7 @@ function makeCurrent(tab) {
         wordListTitle.style.display = "block";
         wordList.style.display = "flex";
         listView.style.display = "none";
+        clear.style.display = "none";
     } else {
         calendarTab.classList.remove("current");
         listTab.classList.add("current");
@@ -250,6 +264,7 @@ function makeCurrent(tab) {
         wordListTitle.style.display = "none";
         wordList.style.display = "none";
         listView.style.display = "block";
+        clear.style.display = "block";
     }
 }
 
