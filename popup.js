@@ -1,14 +1,14 @@
-var navigation = document.getElementById('navigation');
+var firstPage = document.getElementById('firstPage');
+var secondPage = document.getElementById('secondPage');
 var calendarTab = document.getElementById('calendarTab');
 var listTab = document.getElementById('listTab');
-var flexbox = document.getElementById('flexbox');
-var calendar = document.getElementById('calendar');
 var heading = document.getElementById('heading');
 var dates = document.getElementById('dates');
 var outputHeader = document.getElementById('outputHeader');
 var wordListTitle = document.getElementById('wordListTitle');
 var wordList = document.getElementById('wordList');
 var listView = document.getElementById('listView');
+var search = document.getElementById('search');
 var clear = document.getElementById('clear');
 
 // get today's information
@@ -25,9 +25,7 @@ var daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 var byDate; // keeps track of what words have been stored by each day
 var byWord; // keeps track of all words stored
 
-calendarTab.onclick = function() {makeCurrent("calendar")};
-listTab.onclick = function() {makeCurrent("list")};
-
+// gets words from storage
 chrome.storage.sync.get(null, function(results){
     byDate = results["byDate"] ? results["byDate"] : {};
     byWord = results["byWord"] ? results["byWord"] : [];
@@ -36,6 +34,45 @@ chrome.storage.sync.get(null, function(results){
     displayByWord();
     makeCurrent("calendar");
 })
+
+
+calendarTab.onclick = function() {
+    makeCurrent("calendar")
+};
+
+listTab.onclick = function() {
+    makeCurrent("list")
+
+    // clear the search 
+    search.value = ""
+    Array.prototype.forEach.call(listView.childNodes, 
+        function(obj) {
+            obj.style.display = "list-item"
+        }
+    )
+};
+
+// implements search function
+search.oninput = function() {
+    var v = search.value;
+    var list = listView.childNodes;
+    if (v === "") {
+        Array.prototype.forEach.call(list, 
+            function(obj) {
+                obj.style.display = "list-item"
+            }
+        )
+    } else {
+        Array.prototype.forEach.call(list, 
+            function(obj) {
+                if (obj.innerHTML.search(v) > -1)
+                    obj.style.display = "list-item"
+                else 
+                    obj.style.display = "none"
+            }
+        )
+    }
+}
 
 // when the clear button is clicked
 clear.onclick = function () {
@@ -252,19 +289,13 @@ function makeCurrent(tab) {
     if (tab === "calendar") {
         calendarTab.classList.add("current");
         listTab.classList.remove("current");
-        flexbox.style.display = "flex";
-        wordListTitle.style.display = "block";
-        wordList.style.display = "flex";
-        listView.style.display = "none";
-        clear.style.display = "none";
+        firstPage.style.display = "block";
+        secondPage.style.display = "none";
     } else {
         calendarTab.classList.remove("current");
         listTab.classList.add("current");
-        flexbox.style.display = "none";
-        wordListTitle.style.display = "none";
-        wordList.style.display = "none";
-        listView.style.display = "block";
-        clear.style.display = "block";
+        firstPage.style.display = "none";
+        secondPage.style.display = "block";
     }
 }
 

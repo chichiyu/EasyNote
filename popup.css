@@ -110,7 +110,7 @@ body {
 }
 
 .today {
-    background-color: #D196D1;
+    background-color: rgb(145, 215, 224);
 }
 
 .future {
@@ -185,6 +185,18 @@ body {
 
 .minusButton:hover {
     background-color: #F5A0A0;
+}
+
+/* format of the search bar */
+#search {
+    width: 50%;
+    border: 2px solid #cccccc;
+    border-radius: 4px;
+    margin-left: 50%;
+    background-image:url('image/searchicon.png');
+    background-repeat: no-repeat;
+    background-position: 5px 4px;
+    padding: 5px 15px 5px 25px;
 }
 
 /* format of the clear button */

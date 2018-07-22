@@ -10,19 +10,22 @@
             <div id="calendarTab">Calendar</div>
             <div id="listTab">List</div>
         </div>
-        <div id="flexbox">
-            <div id="outputHeader"></div>
-            <div id="calendar">
-                <div id="heading"></div>
-                <div id="dates"></div>
+        <div id="firstPage">
+            <div id="flexbox">
+                <div id="outputHeader"></div>
+                <div id="calendar">
+                    <div id="heading"></div>
+                    <div id="dates"></div>
+                </div>
             </div>
+            <div id="wordListTitle"></div>
+            <ul id="wordList"></ul>
         </div>
-        <div id="wordListTitle"></div>
-        <ul id="wordList"></ul>
-        <ul id="listView"></ul>
-
-        <button id="clear">Clear All</button>
-
+        <div id ="secondPage">
+            <input type="text" id="search" placeholder="Search..">
+            <ul id="listView"></ul>
+            <button id="clear">Clear All</button>
+        </div>  
         <script src="clear.js"></script>
         <script src="popup.js"></script>
     </body>
