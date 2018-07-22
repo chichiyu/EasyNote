@@ -68,6 +68,9 @@ body {
     background-color: #dddddd;
 }
 
+.future {
+    color: #AAAAAA
+}
 /* format of the calendar heading */
 #heading {
     display: flex;
@@ -87,7 +90,7 @@ body {
     text-align: center;
 }
 
-#heading > div:not(.future):hover {
+#heading > .side:not(.future):hover {
     background-color: #dddddd;
 }
 
@@ -100,12 +103,17 @@ body {
     font-size: 10px;
 }
 
-.day {
+.day, .dayName {
     flex-basis: 20px;
     text-align: center;
+    color: #AAAAAA;
 }
 
-.day:nth-child(7n + 1):not(.future) {
+.dayName:not(:nth-child(7n + 1)) {
+    color: black;
+}
+
+.dayName:nth-child(7n + 1) {
     color: red;
 }
 
@@ -113,25 +121,28 @@ body {
     background-color: rgb(145, 215, 224);
 }
 
-.future {
-    color: #AAAAAA;
+.hasWord:not(:nth-child(7n + 1)) {
+    font-weight: bold;
+    cursor: pointer;
+    color: black;
 }
 
-.hasWord {
+
+.hasWord:nth-child(7n + 1) {
+    color: red;
     font-weight: bold;
     cursor: pointer;
 }
 
 .hasWord:hover {
-    background-color: #dddddd;
-    
+    background-color: #dddddd;  
 }
 
 /* format of the wordlist */
 #wordList {
     display: flex;
     flex-flow: row wrap;
-    height: 60%;
+    height: 210px;
     overflow-y: auto;
     align-content: flex-start;
 }
@@ -142,8 +153,8 @@ body {
 
 /* format of the listView */
 #listView {
-    height: 87%;
-    margin: 0 0 10.5% 0;
+    height: 300px;
+    margin: 0 0 10px 0;
     overflow-y: auto;
 }
 
@@ -193,6 +204,7 @@ body {
     border: 2px solid #cccccc;
     border-radius: 4px;
     margin-left: 50%;
+    margin-bottom: 5px;
     background-image:url('image/searchicon.png');
     background-repeat: no-repeat;
     background-position: 5px 4px;
@@ -218,4 +230,32 @@ body {
 
 #clear:hover {
     opacity: 0.9;
+}
+
+/* alert box format */
+#alert {
+    display: none;
+    position: absolute;
+    bottom: 45%;
+    left: 0;
+    right: 0;
+    margin: 0 10px;
+    padding: 10px;
+    background-color: #f14539;
+    color: white;
+    text-align: center;
+    font-size: 15px;
+}
+
+
+.alertButtons {
+    padding: 2px;
+    margin: 10px 5px;
+    border: 1px solid #888888;
+    background-color: #cccccc;
+    cursor: pointer;
+}
+
+.alertButtons:hover {
+    background-color: #eeeeee;
 }

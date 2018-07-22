@@ -11,6 +11,10 @@ var listView = document.getElementById('listView');
 var search = document.getElementById('search');
 var clear = document.getElementById('clear');
 
+var alert = document.getElementById('alert');
+var confirm = document.getElementById('confirm');
+var cancel = document.getElementById('cancel');
+
 // get today's information
 var today = new Date();
 var todayYear = today.getFullYear();
@@ -54,21 +58,23 @@ listTab.onclick = function() {
 
 // implements search function
 search.oninput = function() {
-    var v = search.value;
+    var v = search.value.toLowerCase();
     var list = listView.childNodes;
     if (v === "") {
         Array.prototype.forEach.call(list, 
             function(obj) {
-                obj.style.display = "list-item"
+                obj.style.display = "list-item";
             }
         )
     } else {
         Array.prototype.forEach.call(list, 
             function(obj) {
+                console.log(obj.tagName);
+                if (obj.tagName === "P") return;
                 if (obj.innerHTML.search(v) > -1)
-                    obj.style.display = "list-item"
+                    obj.style.display = "list-item";
                 else 
-                    obj.style.display = "none"
+                    obj.style.display = "none";
             }
         )
     }
@@ -76,8 +82,16 @@ search.oninput = function() {
 
 // when the clear button is clicked
 clear.onclick = function () {
-    var r = confirm("Are you sure? This will remove all the words you saved.")
-    if (r === true) chrome.storage.sync.clear(function(){
+    alert.style.display='block';
+}
+
+cancel.onclick = function() {
+    alert.style.display='none';
+}
+
+confirm.onclick = function() {
+    alert.style.display='none';
+    chrome.storage.sync.clear(function(){
         byDate = {};
         byWord = [];
         makeCalendar(todayYear, todayMonth);
@@ -152,7 +166,7 @@ function addText(input) {
     var newDiv = document.createElement("div");
     var text = document.createTextNode(input);
     newDiv.appendChild(text);
-    newDiv.classList.add("day");
+    newDiv.classList.add("dayName");
     dates.appendChild(newDiv);
 }
 
@@ -260,7 +274,7 @@ function displayByWord() {
     }
 
     if (byWord.length === 0) {
-        var noWord = document.createElement("li");
+        var noWord = document.createElement("p");
         noWord.classList.add("noWord");
         var newText = document.createTextNode("You didn't save any words!");
         noWord.appendChild(newText);
