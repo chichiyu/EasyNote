@@ -11,7 +11,13 @@ document.addEventListener("click", function(){
         if (prevButton && prevButton.parentElement) 
             prevButton.parentElement.removeChild(prevButton);
 
-        var node = selection.focusNode;
+        // pick the later node
+        var node;
+        var position = selection.anchorNode.compareDocumentPosition(selection.focusNode);
+        if (position & Node.DOCUMENT_POSITION_FOLLOWING)
+            node = selection.focusNode;
+        else
+            node = selection.anchorNode;
 
         // create new button
         var button = document.createElement("button");
