@@ -40,7 +40,7 @@ document.addEventListener("click", function(){
             chrome.storage.sync.get(null, function(item) {
                 if (item["byWord"] && indexOf(item["byWord"], text) > -1) {
                     var obj = item["byWord"][indexOf(item["byWord"], text)]
-                    var msg = "You've already saved this word on " + obj.year + "/" + (obj.month + 1) + "/" + obj.date + "!"
+                    var msg = "You've already saved '" + text + "' on " + obj.year + "/" + (obj.month + 1) + "/" + obj.date + "!"
                     alert(msg);
                 } else {
                     if (!item["byDate"] || !item["byDate"][year]) {
