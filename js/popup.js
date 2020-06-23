@@ -8,11 +8,11 @@ var outputHeader = document.getElementById('outputHeader');
 var wordListTitle = document.getElementById('wordListTitle');
 var wordList = document.getElementById('wordList');
 var listView = document.getElementById('listView');
-var search = document.getElementById('search');
+var search2 = document.getElementById('search2');
 var clear = document.getElementById('clear');
 
 var alert = document.getElementById('alert');
-var confirm = document.getElementById('confirm');
+var confirmButton = document.getElementById('confirm');
 var cancel = document.getElementById('cancel');
 
 // get today's information
@@ -48,7 +48,7 @@ listTab.onclick = function() {
     makeCurrent("list")
 
     // clear the search 
-    search.value = ""
+    search2.value = ""
     Array.prototype.forEach.call(listView.childNodes, 
         function(obj) {
             obj.style.display = "list-item"
@@ -57,8 +57,8 @@ listTab.onclick = function() {
 };
 
 // implements search function
-search.oninput = function() {
-    var v = search.value.toLowerCase();
+search2.oninput = function() {
+    var v = search2.value.toLowerCase();
     var list = listView.childNodes;
     if (v === "") {
         Array.prototype.forEach.call(list, 
@@ -89,7 +89,7 @@ cancel.onclick = function() {
     alert.style.display='none';
 }
 
-confirm.onclick = function() {
+confirmButton.onclick = function() {
     alert.style.display='none';
     chrome.storage.sync.clear(function(){
         byDate = {};
@@ -252,7 +252,8 @@ function displayByDate(year, month, date) {
         for (var word of wordArr) {
             var newWord = document.createElement("li");
             newWord.classList.add("word");
-            var newText = document.createTextNode(word);
+            var newText = document.createElement("div");
+            newText.innerHTML = "<b>" + word.text + ": </b>" + word.def
             newWord.appendChild(newText);
             wordList.appendChild(newWord);
 
@@ -283,7 +284,8 @@ function displayByWord() {
         for (word of byWord) {
             var newWord = document.createElement("li");
             newWord.classList.add("word");
-            var newText = document.createTextNode(word.text);
+            var newText = document.createElement("div");
+            newText.innerHTML = "<b>" + word.text + ": </b>" + word.def
             newWord.appendChild(newText);
             listView.appendChild(newWord);
         }
@@ -316,13 +318,17 @@ function makeCurrent(tab) {
 // Delete a saved word
 function deleteWord(year, month, date, button) {
     var parent = button.parentNode;
-    var word = button.previousSibling.innerHTML;
+    var word = button.previousSibling.querySelector("b").innerHTML;
+    word = word.slice(0, word.length-2)
+    console.log(word)
 
     parent.removeChild(button.previousSibling);
     parent.removeChild(button);
     
     // remove the time from storage
-    var index = byDate[year][month][date].indexOf(word);
+
+    var index = indexOf(byDate[year][month][date], word);
+    console.log(index)
     byDate[year][month][date].splice(index, 1);
 
     if (byDate[year][month][date].length === 0) {

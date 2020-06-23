@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <link rel="stylesheet" type="text/css" href="popup.css">
+        <link rel="stylesheet" type="text/css" href="css/popup.css">
         <meta charset="UTF-8">
         <title></title>
     </head>
@@ -18,11 +18,17 @@
                     <div id="dates"></div>
                 </div>
             </div>
+            <div id="searchWord">
+                <input type="text" id="search1" class="search" placeholder="Search..">
+                <div id="go">Go</div>
+            </div>
+            <div id="definition"></div>
+            <div id="synonyms"></div>
             <div id="wordListTitle"></div>
             <ul id="wordList"></ul>
         </div>
         <div id ="secondPage">
-            <input type="text" id="search" placeholder="Search..">
+            <input type="text" id="search2" class="search" placeholder="Search..">
             <ul id="listView"></ul>
             <button id="clear">Clear All</button>
 
@@ -33,7 +39,10 @@
             </div>
 
         </div>  
-        <script src="clear.js"></script>
-        <script src="popup.js"></script>
+
+        <script src="config.js"></script>
+        <script src="js/saveword.js"></script>
+        <script src="js/popup.js"></script>
+        <script src="js/dict.js"></script>
     </body>
 </html>
